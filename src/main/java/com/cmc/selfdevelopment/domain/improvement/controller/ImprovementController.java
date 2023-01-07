@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -61,21 +62,19 @@ public class ImprovementController {
 
     @Operation(summary = "Todo 리스트 추가", description = "자기계발을 Todo에 추가하는 메서드입니다")
     @PostMapping("/todo")
-    public ResponseEntity<ApiResponse<TodoDto>> createTodo(@RequestBody CreateTodoDto createTodoDto, Authentication authentication){
-        User details = (User) authentication.getDetails();
-        String username = details.getUsername();
-        UserAccount user = userService.findUserById(Long.parseLong(username));
-        TodoDto todoDto = todoService.create(createTodoDto, user);
+    public ResponseEntity<ApiResponse<TodoDto>> createTodo(@RequestBody CreateTodoDto createTodoDto,
+                                                           @AuthenticationPrincipal User user){
+        UserAccount findUser = userService.findUserById(Long.parseLong(user.getUsername()));
+        TodoDto todoDto = todoService.create(createTodoDto, findUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.IMPROVEMENT_CREATED, todoDto));
     }
 
     @Operation(summary = "Todo 체크 변경", description = "Todo 체크 변경 하는 메서드입니다")
     @PostMapping("/todo/check")
-    public ResponseEntity<ApiResponse<TodoDto>> changeTodo(@RequestBody ChangeDoneDto changeDoneDto, Authentication authentication){
-        User details = (User) authentication.getDetails();
-        String username = details.getUsername();
-        UserAccount user = userService.findUserById(Long.parseLong(username));
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_CHANGE, todoService.changeCheck(user, changeDoneDto)));
+    public ResponseEntity<ApiResponse<TodoDto>> changeTodo(@RequestBody ChangeDoneDto changeDoneDto,
+                                                           @AuthenticationPrincipal User user){
+        UserAccount findUser = userService.findUserById(Long.parseLong(user.getUsername()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_CHANGE, todoService.changeCheck(findUser, changeDoneDto)));
     }
 
     @Operation(summary = "날짜 별 Todo", description = "날짜 별 Todo리스트를 보여주는 메서드입니다")
