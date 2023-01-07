@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/cmc_local?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
+    username: cmc
+    password: cmc1234!
+  jpa:
+    hibernate:
+      ddl-auto: create
