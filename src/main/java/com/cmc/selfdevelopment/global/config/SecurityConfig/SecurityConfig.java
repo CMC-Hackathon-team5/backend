@@ -1,16 +1,24 @@
 package com.cmc.selfdevelopment.global.config.SecurityConfig;
 
 
+import com.cmc.selfdevelopment.domain.user.repository.UserRepository;
+import com.cmc.selfdevelopment.global.config.SecurityConfig.jwt.JwtAuthenticationCheckFilter;
+import com.cmc.selfdevelopment.global.config.SecurityConfig.jwt.JwtAuthenticationEntryPoint;
+import com.cmc.selfdevelopment.global.config.SecurityConfig.jwt.JwtTokenProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.authentication.AuthenticationManagerFactoryBean;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,6 +27,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private static final String[] POST_PERMITTED_URLS = {
+            "/api/user/signup", "/api/user/login"
+    };
+
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -26,8 +39,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(
-            HttpSecurity http
-    ) throws Exception {
+            HttpSecurity http, JwtAuthenticationCheckFilter jwtAuthenticationCheckFilter,
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint    ) throws Exception {
         http
                 .cors()//CORS 허용 정책(Front , Back 사이에 도메인이 달라지는 경우)
                 .and()
@@ -36,8 +49,16 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //스프링시큐리티가 생성하지도않고 기존것을 사용하지도 않음 ->JWT 같은토큰방식을 쓸때 사용하는 설정
                 .and()
                 .formLogin().disable()  // 서버에서  View를 배포하지 안으므로 disable
-                .httpBasic().disable(); // JWT 인증 방식을 사용하기에 httpBasic을 이용한 인증방식 사용X
+                .httpBasic().disable() // JWT 인증 방식을 사용하기에 httpBasic을 이용한 인증방식 사용X
 
+                .addFilterAfter(jwtAuthenticationCheckFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(config -> config
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
+                .authorizeRequests(antz -> antz
+                        .antMatchers(HttpMethod.POST, POST_PERMITTED_URLS).permitAll()
+                        .anyRequest().authenticated()
+                );
         return http.build();
     }
 
@@ -55,5 +76,19 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+    @Bean
+    public AuthenticationManager authenticationManager(ApplicationContext context) throws Exception {
+        AuthenticationManagerFactoryBean authenticationManagerFactoryBean = new AuthenticationManagerFactoryBean();
+        authenticationManagerFactoryBean.setBeanFactory(context);
+        return authenticationManagerFactoryBean.getObject();
+    }
+    @Bean
+    public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint(ObjectMapper objectMapper) {
+        return new JwtAuthenticationEntryPoint(objectMapper);
+    }
 
+    @Bean
+    public JwtAuthenticationCheckFilter jwtAuthenticationCheckFilter(JwtTokenProvider jwtTokenProvider) {
+        return new JwtAuthenticationCheckFilter(jwtTokenProvider);
+    }
 }
