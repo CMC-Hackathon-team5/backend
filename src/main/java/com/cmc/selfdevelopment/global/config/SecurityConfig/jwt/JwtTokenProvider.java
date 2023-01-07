@@ -34,7 +34,7 @@ public class JwtTokenProvider {
     private final JwtParser jwtParser;
 
     public JwtTokenProvider(
-            @Value("100") long accessTokenValidity,
+            @Value("10000000") long accessTokenValidity,
             @Value("ORt1VUoUmimqnQq1DsCaZLfEd5hZYq82P1OShNwIaos") String secret,
             UserDetailsService userDetailsService) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
