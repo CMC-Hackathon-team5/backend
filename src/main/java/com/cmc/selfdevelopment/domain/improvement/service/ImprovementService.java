@@ -29,6 +29,13 @@ public class ImprovementService {
 
         return Optional.ofNullable(ImprovementMapper.INSTANCE.toDto(improvementRepository.findByTitle(title).get()));
     }
+    public Optional<Improvement> findByTitleToEntity(String title){
+        if(improvementRepository.findByTitle(title).isEmpty()){
+            return null;
+        }
+
+        return Optional.ofNullable(improvementRepository.findByTitle(title).get());
+    }
     public ImprovementDto create(ImprovementDto improvementDto) {
         if(findByTitle(improvementDto.getTitle()) != null){
             throw new CustomException(ErrorCode.IMPROVEMENT_NOT_FOUND);

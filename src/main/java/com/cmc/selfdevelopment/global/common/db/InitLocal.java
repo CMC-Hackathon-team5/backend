@@ -2,6 +2,8 @@ package com.cmc.selfdevelopment.global.common.db;
 
 import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
 import com.cmc.selfdevelopment.domain.improvement.service.ImprovementService;
+import com.cmc.selfdevelopment.domain.user.UserTempDto;
+import com.cmc.selfdevelopment.domain.user.UserTempService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +17,7 @@ public class InitLocal {
 
     @Bean
     CommandLineRunner init(
-            ImprovementService improvementService
+            ImprovementService improvementService, UserTempService userTempService
     ){
         return args -> {
             if(!initData){
@@ -43,6 +45,14 @@ public class InitLocal {
             improvementService.create(improvementDto9);
             improvementService.create(improvementDto10);
 
+            UserTempDto userTempDto1 = new UserTempDto("test1@test.com", "password", "테스트이름1", 12);
+            userTempService.create(userTempDto1);
+            UserTempDto userTempDto2 = new UserTempDto("test2@test.com", "password", "테스트이름2", 13);
+            userTempService.create(userTempDto2);
+            UserTempDto userTempDto3 = new UserTempDto("test3@test.com", "password", "테스트이름3", 14);
+            userTempService.create(userTempDto3);
+            UserTempDto userTempDto4 = new UserTempDto("test4@test.com", "password", "테스트이름4", 15);
+            userTempService.create(userTempDto4);
         };
     }
 
