@@ -43,7 +43,7 @@ public class CommentController {
 
         List<CommentResponseDto> comments = commentService.getComments(diaryId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.GET_COMMENTS_SUCCESS), comments);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.GET_COMMENTS_SUCCESS, comments));
     }
 
     @Operation(summary = "댓글 수정", description = "댓글을 수정하는 메소드입니다.")
@@ -55,5 +55,9 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 삭제", description = "댓글을 삭제하는 메소드입니다.")
-    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse> deleteComment(@PathVariable("id") Long commentId){
+        commentService.deleteComment(commentId);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(ResponseCode.COMMENT_DELETED));
+    }
 }
