@@ -23,7 +23,10 @@ public enum ResponseCode {
     GET_COMMENTS_SUCCESS(HttpStatus.OK, "댓글 전체 조회에 성공하였습니다."),
     COMMENT_UPDATED(HttpStatus.CREATED, "댓글 수정에 성공하였습니다."),
     COMMENT_DELETED(HttpStatus.OK, "댓글 삭제에 성공하였습니다.");
-
+    TODO_CHANGE(HttpStatus.OK, "isDone 변경에 성공했습니다."),
+    TODO_LIST(HttpStatus.OK, "해당 날짜의 Todo 리스트입니다"),
+    TODO_MONTH_PERCENT(HttpStatus.OK, "특정 달의 TODO 성취도 입니다")
+    ;
     private final HttpStatus status;
     private final String message;
 
