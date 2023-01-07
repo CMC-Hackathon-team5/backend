@@ -33,4 +33,9 @@ public class Todo extends BaseEntity {
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date date;
+
+    public void change(){
+        isDone = !isDone;
+    }
+
 }

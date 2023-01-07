@@ -1,5 +1,6 @@
 package com.cmc.selfdevelopment.domain.improvement.controller;
 
+import com.cmc.selfdevelopment.domain.improvement.dto.ChangeDoneDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.CreateTodoDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.TodoDto;
@@ -65,7 +66,13 @@ public class ImprovementController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.IMPROVEMENT_CREATED, todoDto));
     }
 
-
+    @Operation(summary = "Todo 체크 변경", description = "Todo 체크 변경 하는 메서드입니다")
+    @PostMapping("/todo/check")
+    public ResponseEntity<ApiResponse<TodoDto>> changeTodo(@RequestBody ChangeDoneDto changeDoneDto){
+        // TODO : 회원가입이후 수정해야합니다.
+        User user = userTempService.findById(1L).get();
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_CHANGE, todoService.changeCheck(user, changeDoneDto)));
+    }
 
 
 }

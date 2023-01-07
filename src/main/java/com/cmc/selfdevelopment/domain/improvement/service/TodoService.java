@@ -1,5 +1,6 @@
 package com.cmc.selfdevelopment.domain.improvement.service;
 
+import com.cmc.selfdevelopment.domain.improvement.dto.ChangeDoneDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.CreateTodoDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.TodoDto;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -30,7 +32,7 @@ public class TodoService {
             findImprovement = improvementService.findByTitleToEntity(createTodoDto.getTitle());
         }
         Improvement improvement = findImprovement.get();
-        if(findByUserAndImprovement(user,improvement)){
+        if(existsByUserAndImprovement(user, improvement, createTodoDto.getDate())){
             throw new CustomException(ErrorCode.TODO_DUPLICATED);
         }
         // TODO : mapper로 바꾸기
@@ -47,7 +49,27 @@ public class TodoService {
                 .build();
     }
 
-    public boolean findByUserAndImprovement(User user, Improvement improvement){
-        return todoRepository.existsByUserAndImprovement(user, improvement);
+    public boolean existsByUserAndImprovement(User user, Improvement improvement, Date date){
+        Optional<Todo> todo = todoRepository.findByUserAndImprovementAndDate(user, improvement, date);
+        if(todo.isPresent()){
+            return true;
+        }
+        return false;
+    }
+
+    public TodoDto changeCheck(User user, ChangeDoneDto changeDoneDto) {
+        Optional<Improvement> findImprovement = improvementService.findByTitleToEntity(changeDoneDto.getTitle());
+        if(findImprovement == null){
+            throw new CustomException(ErrorCode.TODO_NOT_FOUND);
+        }
+        Improvement improvement = findImprovement.get();
+        Todo finTodo = todoRepository.findByUserAndImprovementAndDate(user, improvement, changeDoneDto.getDate()).get();
+        finTodo.change();
+        todoRepository.save(finTodo);
+        return TodoDto.builder()
+                .title(improvement.getTitle())
+                .isDone(finTodo.isDone())
+                .date(finTodo.getDate())
+                .build();
     }
 }
