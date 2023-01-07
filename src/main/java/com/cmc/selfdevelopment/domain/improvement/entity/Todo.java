@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Getter
@@ -19,10 +21,16 @@ public class Todo extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "improvement_id")
     private Improvement improvement;
 
     @ColumnDefault("false")
     private boolean isDone;
+
+//    @Temporal(TemporalType.DATE)
+//    private Date date;
+
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private Date date;
 }
