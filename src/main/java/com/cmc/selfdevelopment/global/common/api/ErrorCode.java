@@ -15,12 +15,13 @@ public enum ErrorCode {
     // user
     PASSWORD_ENCRYPTION_ERROR(HttpStatus.CONFLICT, "비밀번호 암호화에 실패하였습니다."),
     DUPLICATED_EMAIL(HttpStatus.CONFLICT, "중복된 이메일 입니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     USERFAILED_LOGIN(HttpStatus.NOT_FOUND, "이메일이 없거나 비밀번호가 잘못 되었습니다."),
+    
     // diary
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계획입니다."),
     IMPROVEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 자기 계발입니다."),
     IMPROVEMENT_DUPLICATED(HttpStatus.CONFLICT, "이미 존재하는 자기 계발입니다.");
-
 
     private final HttpStatus status;
     private final String message;
