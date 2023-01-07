@@ -1,6 +1,8 @@
 package com.cmc.selfdevelopment.domain.user.controller;
 
+import com.cmc.selfdevelopment.domain.user.dto.request.LogInRequstDto;
 import com.cmc.selfdevelopment.domain.user.dto.request.SignUpRequestDto;
+import com.cmc.selfdevelopment.domain.user.dto.response.LogInResponseDto;
 import com.cmc.selfdevelopment.domain.user.service.UserService;
 import com.cmc.selfdevelopment.global.common.api.ApiResponse;
 import com.cmc.selfdevelopment.global.common.api.ResponseCode;
@@ -20,16 +22,16 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> signup(@RequestBody SignUpRequestDto request) {
+    public ResponseEntity<ApiResponse<String>> signup(@RequestBody SignUpRequestDto request) {
         userService.validationDuplicateEmail(request.getEmail());
         userService.userSignUp(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.USER_SIGNUP));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<String>> logIn() {
- //       userService.userLogIn();
-        return null;
+    public ResponseEntity<ApiResponse<LogInResponseDto>> logIn(@RequestBody LogInRequstDto request) {
+        LogInResponseDto logInResponseDto = userService.userLogIn(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.USER_SIGNUP,logInResponseDto));
     }
 
     @GetMapping("/profile")
