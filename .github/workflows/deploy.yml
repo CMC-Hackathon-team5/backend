@@ -51,5 +51,5 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cmc_backend
             docker stop ${{ secrets.BACKEND_PROJECT_NAME }}
-            docker run --name=${{ secrets.BACKEND_PROJECT_NAME }} -d --rm -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME  }}/cmc_backend
+            docker run --name=${{ secrets.BACKEND_PROJECT_NAME }} -d --rm -p 8080:8080 -e JAVA_OPTS=-Djasypt.encryptor.password=${{ secrets.JASYPT_KEY }} ${{ secrets.DOCKERHUB_USERNAME  }}/cmc_backend
             docker image prune -f
