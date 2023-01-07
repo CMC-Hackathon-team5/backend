@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.authentication.AuthenticationManagerFactoryBean;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,6 +58,7 @@ public class SecurityConfig {
                 )
                 .authorizeRequests(antz -> antz
                         .antMatchers(HttpMethod.POST, POST_PERMITTED_URLS).permitAll()
+                        .antMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
@@ -90,5 +92,10 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationCheckFilter jwtAuthenticationCheckFilter(JwtTokenProvider jwtTokenProvider) {
         return new JwtAuthenticationCheckFilter(jwtTokenProvider);
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().antMatchers("/swagger-ui/**");
     }
 }
