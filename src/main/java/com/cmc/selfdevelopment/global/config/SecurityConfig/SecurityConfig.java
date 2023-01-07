@@ -56,10 +56,4 @@ public class SecurityConfig {
         return source;
     }
 
-    //회원가입 필터 제외
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-                .antMatchers(HttpMethod.POST, "/api/user/signup");
-    }
 }
