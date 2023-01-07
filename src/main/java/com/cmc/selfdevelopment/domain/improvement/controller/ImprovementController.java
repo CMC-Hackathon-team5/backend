@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/improvement-management")
+@RequestMapping("/api/improvement-management")
 @Slf4j
 public class ImprovementController {
 
