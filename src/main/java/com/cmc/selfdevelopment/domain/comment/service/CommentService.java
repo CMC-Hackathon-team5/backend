@@ -60,7 +60,7 @@ public class CommentService {
     @Transactional
     public void updateComment(Long commentId, String content) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND))
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         comment.setContent(content);
         commentRepository.save(comment);
         return;
