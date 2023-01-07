@@ -1,9 +1,6 @@
 package com.cmc.selfdevelopment.domain.improvement.controller;
 
-import com.cmc.selfdevelopment.domain.improvement.dto.ChangeDoneDto;
-import com.cmc.selfdevelopment.domain.improvement.dto.CreateTodoDto;
-import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
-import com.cmc.selfdevelopment.domain.improvement.dto.TodoDto;
+import com.cmc.selfdevelopment.domain.improvement.dto.*;
 import com.cmc.selfdevelopment.domain.improvement.service.ImprovementService;
 import com.cmc.selfdevelopment.domain.improvement.service.TodoService;
 import com.cmc.selfdevelopment.domain.user.UserTempService;
@@ -26,7 +23,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/improvement-management")
+@RequestMapping("/api/improvement-management")
 @Slf4j
 public class ImprovementController {
 
@@ -83,4 +80,10 @@ public class ImprovementController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_LIST, todoService.findAllTodo(date)));
     }
 
+    @Operation(summary = "특정 월에 해당하는 퍼센트", description = "특정 월에 해당하는 모든 날짜의 완성도 퍼센티지를 리턴")
+    @GetMapping("/todo/month")
+    public ResponseEntity<ApiResponse<List<TodoPercentDto>>> showTodoPercent(@RequestParam("date") Date date){
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_MONTH_PERCENT, todoService.findMonthPercent(date)));
+    }
 }
