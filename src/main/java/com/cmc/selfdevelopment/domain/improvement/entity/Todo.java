@@ -1,6 +1,6 @@
 package com.cmc.selfdevelopment.domain.improvement.entity;
 
-import com.cmc.selfdevelopment.domain.user.entity.UserAccount;
+import com.cmc.selfdevelopment.domain.user.entity.User;
 import com.cmc.selfdevelopment.global.common.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class Todo extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserAccount user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "improvement_id")

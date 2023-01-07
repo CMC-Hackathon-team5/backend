@@ -1,9 +1,10 @@
 package com.cmc.selfdevelopment.domain.diary.service;
 
 import com.cmc.selfdevelopment.domain.diary.dto.DiaryResponseDto;
+import com.cmc.selfdevelopment.domain.diary.dto.mapper.DiaryMapper;
 import com.cmc.selfdevelopment.domain.diary.entity.Diary;
 import com.cmc.selfdevelopment.domain.diary.repository.DiaryRepository;
-import com.cmc.selfdevelopment.domain.user.entity.UserAccount;
+import com.cmc.selfdevelopment.domain.user.entity.User;
 import com.cmc.selfdevelopment.domain.user.repository.UserRepository;
 import com.cmc.selfdevelopment.global.common.api.ErrorCode;
 import com.cmc.selfdevelopment.global.common.exception.CustomException;
@@ -25,11 +26,11 @@ public class DiaryService {
 
     @Transactional
     public void createDiary(Long userId, String content) {
-        UserAccount userAccount = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Diary diary = Diary.builder()
-                .userAccount(userAccount)
+                .user(user)
                 .content(content)
                 .build();
 
@@ -40,13 +41,13 @@ public class DiaryService {
 
     @Transactional
     public List<DiaryResponseDto> getAllDiaries(Long userId) {
-        List<Diary> diaries = diaryRepository.findByUserAccountId(userId);
+        List<Diary> diaries = diaryRepository.findByUserId(userId);
 //        List<DiaryResponseDto> diariesResponseDto = diaries.stream().map(DiaryMapper.INSTANCE::toResponseDto).collect(Collectors.toList());
 
         List<DiaryResponseDto> diariesResponseDto = diaries.stream()
                 .map((diary -> DiaryResponseDto.builder()
                         .id(diary.getId())
-                        .user_id(diary.getUserAccount().getId())
+                        .user_id(diary.getUser().getId())
                         .content(diary.getContent())
                         .build()))
                 .collect(Collectors.toList());
@@ -69,7 +70,7 @@ public class DiaryService {
 //        DiaryResponseDto diaryResponseDto = DiaryMapper.INSTANCE.toResponseDto(diary);
         DiaryResponseDto diaryResponseDto = DiaryResponseDto.builder()
                 .id(diary.getId())
-                .user_id(diary.getUserAccount().getId())
+                .user_id(diary.getUser().getId())
                 .content(diary.getContent())
                 .build();
         return diaryResponseDto;

@@ -4,7 +4,7 @@ import com.cmc.selfdevelopment.domain.improvement.dto.*;
 import com.cmc.selfdevelopment.domain.improvement.entity.Improvement;
 import com.cmc.selfdevelopment.domain.improvement.entity.Todo;
 import com.cmc.selfdevelopment.domain.improvement.repository.TodoRepository;
-import com.cmc.selfdevelopment.domain.user.entity.UserAccount;
+import com.cmc.selfdevelopment.domain.user.entity.User;
 import com.cmc.selfdevelopment.global.common.api.ErrorCode;
 import com.cmc.selfdevelopment.global.common.exception.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class TodoService {
     private final ImprovementService improvementService;
     private final TodoRepository todoRepository;
-    public TodoDto create(CreateTodoDto createTodoDto, UserAccount user) {
+    public TodoDto create(CreateTodoDto createTodoDto, User user) {
         Optional<Improvement> findImprovement = improvementService.findByTitleToEntity(createTodoDto.getTitle());
         if(findImprovement == null){
             improvementService.create(ImprovementDto.builder()
@@ -51,7 +51,7 @@ public class TodoService {
                 .build();
     }
 
-    public boolean existsByUserAndImprovement(UserAccount user, Improvement improvement, Date date){
+    public boolean existsByUserAndImprovement(User user, Improvement improvement, Date date){
         Optional<Todo> todo = todoRepository.findByUserAndImprovementAndDate(user, improvement, date);
         if(todo.isPresent()){
             return true;
@@ -59,7 +59,7 @@ public class TodoService {
         return false;
     }
 
-    public TodoDto changeCheck(UserAccount user, ChangeDoneDto changeDoneDto) {
+    public TodoDto changeCheck(User user, ChangeDoneDto changeDoneDto) {
         Optional<Improvement> findImprovement = improvementService.findByTitleToEntity(changeDoneDto.getTitle());
         if(findImprovement == null){
             throw new CustomException(ErrorCode.TODO_NOT_FOUND);
