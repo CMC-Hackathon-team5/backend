@@ -5,7 +5,7 @@ import com.cmc.selfdevelopment.domain.comment.entity.Comment;
 import com.cmc.selfdevelopment.domain.comment.repository.CommentRepository;
 import com.cmc.selfdevelopment.domain.diary.entity.Diary;
 import com.cmc.selfdevelopment.domain.diary.repository.DiaryRepository;
-import com.cmc.selfdevelopment.domain.user.entity.User;
+import com.cmc.selfdevelopment.domain.user.entity.UserAccount;
 import com.cmc.selfdevelopment.domain.user.repository.UserRepository;
 import com.cmc.selfdevelopment.global.common.api.ErrorCode;
 import com.cmc.selfdevelopment.global.common.exception.CustomException;
@@ -28,7 +28,7 @@ public class CommentService {
 
     @Transactional
     public void createComment(Long userId, Long diaryId, String content) {
-        User user = userRepository.findById(userId)
+        UserAccount user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Diary diary = diaryRepository.findById(diaryId)

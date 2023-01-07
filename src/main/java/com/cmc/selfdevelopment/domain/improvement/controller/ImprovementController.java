@@ -3,8 +3,8 @@ package com.cmc.selfdevelopment.domain.improvement.controller;
 import com.cmc.selfdevelopment.domain.improvement.dto.*;
 import com.cmc.selfdevelopment.domain.improvement.service.ImprovementService;
 import com.cmc.selfdevelopment.domain.improvement.service.TodoService;
-import com.cmc.selfdevelopment.domain.user.UserTempService;
-import com.cmc.selfdevelopment.domain.user.entity.User;
+import com.cmc.selfdevelopment.domain.user.entity.UserAccount;
+import com.cmc.selfdevelopment.domain.user.service.UserService;
 import com.cmc.selfdevelopment.global.common.api.ApiResponse;
 import com.cmc.selfdevelopment.global.common.exception.CustomException;
 import com.cmc.selfdevelopment.global.common.api.ErrorCode;
@@ -12,9 +12,11 @@ import com.cmc.selfdevelopment.global.common.api.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -29,7 +31,8 @@ public class ImprovementController {
 
     private final ImprovementService improvementService;
     private final TodoService todoService;
-    private final UserTempService userTempService;
+    private final UserService userService;
+
     @Operation(summary = "자기 계발 찾기", description = "title로 자기계발을 찾는 메서드입니다.")
     @GetMapping("/improvement")
     public ResponseEntity<ApiResponse<ImprovementDto>> getImprovement(String title){
@@ -58,18 +61,20 @@ public class ImprovementController {
 
     @Operation(summary = "Todo 리스트 추가", description = "자기계발을 Todo에 추가하는 메서드입니다")
     @PostMapping("/todo")
-    public ResponseEntity<ApiResponse<TodoDto>> createTodo(@RequestBody CreateTodoDto createTodoDto){
-        // TODO : 회원가입이후 수정해야합니다.
-        User user = userTempService.findById(1L).get();
+    public ResponseEntity<ApiResponse<TodoDto>> createTodo(@RequestBody CreateTodoDto createTodoDto, Authentication authentication){
+        User details = (User) authentication.getDetails();
+        String username = details.getUsername();
+        UserAccount user = userService.findUserById(Long.parseLong(username));
         TodoDto todoDto = todoService.create(createTodoDto, user);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.IMPROVEMENT_CREATED, todoDto));
     }
 
     @Operation(summary = "Todo 체크 변경", description = "Todo 체크 변경 하는 메서드입니다")
     @PostMapping("/todo/check")
-    public ResponseEntity<ApiResponse<TodoDto>> changeTodo(@RequestBody ChangeDoneDto changeDoneDto){
-        // TODO : 회원가입이후 수정해야합니다.
-        User user = userTempService.findById(1L).get();
+    public ResponseEntity<ApiResponse<TodoDto>> changeTodo(@RequestBody ChangeDoneDto changeDoneDto, Authentication authentication){
+        User details = (User) authentication.getDetails();
+        String username = details.getUsername();
+        UserAccount user = userService.findUserById(Long.parseLong(username));
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_CHANGE, todoService.changeCheck(user, changeDoneDto)));
     }
 

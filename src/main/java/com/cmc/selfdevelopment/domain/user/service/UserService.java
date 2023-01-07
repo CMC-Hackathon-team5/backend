@@ -44,6 +44,12 @@ public class UserService {
         }
     }
 
+    public UserAccount findUserById(Long id) {
+        UserAccount user = userRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return user;
+    }
+
     public void validationDuplicateEmail(String email) {
         Optional<UserAccount> user = Optional.ofNullable(userRepository.findByEmail(email));
         if (!user.isEmpty()) {

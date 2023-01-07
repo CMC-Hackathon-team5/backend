@@ -2,8 +2,6 @@ package com.cmc.selfdevelopment.global.common.db;
 
 import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
 import com.cmc.selfdevelopment.domain.improvement.service.ImprovementService;
-import com.cmc.selfdevelopment.domain.user.UserTempDto;
-import com.cmc.selfdevelopment.domain.user.UserTempService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +15,7 @@ public class InitLocal {
 
     @Bean
     CommandLineRunner init(
-            ImprovementService improvementService, UserTempService userTempService
+            ImprovementService improvementService
     ){
         return args -> {
             if(!initData){
