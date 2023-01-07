@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface TodoRepository extends JpaRepository<Todo,Long> {
 //    boolean existsByUserAndImprovementAAndDate(User user, Improvement improvement, Date date);
     Optional<Todo> findByUserAndImprovementAndDate(UserAccount user, Improvement improvement, Date date);
-    List<Todo> findByDate(Date date);
+    List<Todo> findByDateAndUser(Date date, UserAccount userAccount);
 }

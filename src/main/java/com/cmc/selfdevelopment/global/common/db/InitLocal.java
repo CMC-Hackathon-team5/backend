@@ -2,6 +2,7 @@ package com.cmc.selfdevelopment.global.common.db;
 
 import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
 import com.cmc.selfdevelopment.domain.improvement.service.ImprovementService;
+import com.cmc.selfdevelopment.domain.improvement.service.TodoService;
 import com.cmc.selfdevelopment.domain.user.dto.request.SignUpRequestDto;
 import com.cmc.selfdevelopment.domain.user.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -17,7 +18,7 @@ public class InitLocal {
 
     @Bean
     CommandLineRunner init(
-            ImprovementService improvementService, UserService userService
+            ImprovementService improvementService, UserService userService, TodoService todoService
     ){
         return args -> {
             if(!initData){
@@ -53,6 +54,8 @@ public class InitLocal {
             userService.userSignUp(signUpRequestDto3);
             SignUpRequestDto signUpRequestDto4 = new SignUpRequestDto("test4@test.com", "password", "테스트이름4");
             userService.userSignUp(signUpRequestDto4);
+
+
         };
     }
 
