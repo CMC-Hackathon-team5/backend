@@ -79,15 +79,17 @@ public class ImprovementController {
 
     @Operation(summary = "날짜 별 Todo", description = "날짜 별 Todo리스트를 보여주는 메서드입니다")
     @GetMapping("/todo")
-    public ResponseEntity<ApiResponse<List<TodoDto>>> showTodo(@RequestParam("date") Date date){
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_LIST, todoService.findAllTodo(date)));
+    public ResponseEntity<ApiResponse<List<TodoDto>>> showTodo(@RequestParam("date") Date date,
+                                                               @AuthenticationPrincipal User user){
+        UserAccount findUser = userService.findUserById(Long.parseLong(user.getUsername()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_LIST, todoService.findAllTodo(date, findUser)));
     }
 
     @Operation(summary = "특정 월에 해당하는 퍼센트", description = "특정 월에 해당하는 모든 날짜의 완성도 퍼센티지를 리턴")
     @GetMapping("/todo/month")
-    public ResponseEntity<ApiResponse<List<TodoPercentDto>>> showTodoPercent(@RequestParam("date") Date date){
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_MONTH_PERCENT, todoService.findMonthPercent(date)));
+    public ResponseEntity<ApiResponse<List<TodoPercentDto>>> showTodoPercent(@RequestParam("date") Date date,
+                                                                             @AuthenticationPrincipal User user){
+        UserAccount findUser = userService.findUserById(Long.parseLong(user.getUsername()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_MONTH_PERCENT, todoService.findMonthPercent(date, findUser)));
     }
 }

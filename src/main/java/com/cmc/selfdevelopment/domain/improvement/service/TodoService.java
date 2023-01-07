@@ -75,8 +75,8 @@ public class TodoService {
                 .build();
     }
 
-    public List<TodoDto> findAllTodo(Date date) {
-        List<Todo> todos = todoRepository.findByDate(date);
+    public List<TodoDto> findAllTodo(Date date, UserAccount user) {
+        List<Todo> todos = todoRepository.findByDateAndUser(date, user);
         return todos.stream()
                 .map(todo -> TodoDto.builder()
                         .title(todo.getImprovement().getTitle())
@@ -86,7 +86,7 @@ public class TodoService {
                 .collect(Collectors.toList());
     }
 
-    public List<TodoPercentDto> findMonthPercent(Date date) {
+    public List<TodoPercentDto> findMonthPercent(Date date, UserAccount user) {
         Year year = Year.of(date.getYear());
         Month month = Month.of(date.getMonth() + 1);
         int lastDay = month.length(year.isLeap());
@@ -96,7 +96,7 @@ public class TodoService {
         System.out.println(lastDay);
         for(int i = 1; i <= lastDay; i++){
             Date eachDate = new Date(year.getValue(), month.getValue() - 1, i);
-            List<TodoDto> todos = findAllTodo(eachDate);
+            List<TodoDto> todos = findAllTodo(eachDate, user);
             todoPercentDtos.add(TodoPercentDto.builder()
                     .percent(todos.size() == 0 ? 0 : countDone(todos)*100/todos.size())
                     .date(eachDate)
