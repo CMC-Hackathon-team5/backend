@@ -11,3 +11,7 @@ logging:
   level:
     com.example.app: debug
     org.hibernate.type.descriptor.sql: trace
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password:
