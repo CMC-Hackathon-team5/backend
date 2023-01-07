@@ -28,7 +28,6 @@ public class UserService {
         } catch (Exception e) {
             throw new CustomException(ErrorCode.PASSWORD_ENCRYPTION_ERROR);
         }
-        System.out.println("dd");
         try {
             User user = User.builder()
                     .name(signUpRequestDto.getName())
