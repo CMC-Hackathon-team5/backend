@@ -1,6 +1,8 @@
 package com.cmc.selfdevelopment.domain.improvement.controller;
 
+import com.cmc.selfdevelopment.domain.improvement.dto.CreateTodoDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
+import com.cmc.selfdevelopment.domain.improvement.dto.TodoDto;
 import com.cmc.selfdevelopment.domain.improvement.service.ImprovementService;
 import com.cmc.selfdevelopment.domain.improvement.service.TodoService;
 import com.cmc.selfdevelopment.domain.user.UserTempService;
@@ -56,10 +58,14 @@ public class ImprovementController {
 
     @Operation(summary = "Todo 리스트 추가", description = "자기계발을 Todo에 추가하는 메서드입니다")
     @PostMapping("/todo")
-    public ResponseEntity<ApiResponse<Void>> createTodo(@RequestBody ImprovementDto improvementDto){
+    public ResponseEntity<ApiResponse<TodoDto>> createTodo(@RequestBody CreateTodoDto createTodoDto){
         // TODO : 회원가입이후 수정해야합니다.
         User user = userTempService.findById(1L).get();
-        todoService.create(improvementDto, user);
-        return null;
+        TodoDto todoDto = todoService.create(createTodoDto, user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.IMPROVEMENT_CREATED, todoDto));
     }
+
+
+
+
 }
