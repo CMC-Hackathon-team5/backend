@@ -1,5 +1,6 @@
 package com.cmc.selfdevelopment.domain.comment.service;
 
+import com.cmc.selfdevelopment.domain.comment.dto.CommentResponseDto;
 import com.cmc.selfdevelopment.domain.comment.entity.Comment;
 import com.cmc.selfdevelopment.domain.comment.repository.CommentRepository;
 import com.cmc.selfdevelopment.domain.diary.entity.Diary;
@@ -12,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,6 +40,28 @@ public class CommentService {
                 .content(content)
                 .build();
 
+        commentRepository.save(comment);
+        return;
+    }
+
+    public List<CommentResponseDto> getComments(Long diaryId) {
+        List<Comment> comments = commentRepository.findByDiaryId(diaryId);
+        List<CommentResponseDto> commentResponseDtos = comments.stream().map((comment ->
+                CommentResponseDto.builder()
+                        .id(comment.getId())
+                        .userId(comment.getUser().getId())
+                        .diaryId(comment.getDiary().getId())
+                        .content(comment.getContent())
+                        .build())
+                ).collect(Collectors.toList());
+        return commentResponseDtos;
+    }
+
+    @Transactional
+    public void updateComment(Long commentId, String content) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND))
+        comment.setContent(content);
         commentRepository.save(comment);
         return;
     }
