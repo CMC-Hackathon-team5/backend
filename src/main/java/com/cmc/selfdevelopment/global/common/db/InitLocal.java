@@ -59,7 +59,7 @@ public class InitLocal {
             SignUpRequestDto signUpRequestDto4 = new SignUpRequestDto("test4@test.com", "password", "테스트이름4");
             userService.userSignUp(signUpRequestDto4);
 
-            CreateTodoDto createTodoDto1 = new CreateTodoDto("낚시", new Date(2023, 1, 15));
+            CreateTodoDto createTodoDto1 = new CreateTodoDto("낚시", new Date(2023 - 1900, 1, 15));
             UserAccount userAccount1 = userService.findUserById(1L);
             todoService.create(createTodoDto1, userAccount1);
         };
