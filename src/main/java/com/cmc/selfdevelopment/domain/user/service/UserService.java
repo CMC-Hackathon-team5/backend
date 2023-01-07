@@ -1,8 +1,8 @@
 package com.cmc.selfdevelopment.domain.user.service;
 
 import com.cmc.selfdevelopment.domain.user.dto.request.LogInRequstDto;
+import com.cmc.selfdevelopment.domain.user.dto.request.ModifyNameRequstDto;
 import com.cmc.selfdevelopment.domain.user.dto.request.SignUpRequestDto;
-import com.cmc.selfdevelopment.domain.user.dto.response.AccessTokenDto;
 import com.cmc.selfdevelopment.domain.user.dto.response.LogInResponseDto;
 import com.cmc.selfdevelopment.domain.user.entity.UserAccount;
 import com.cmc.selfdevelopment.domain.user.repository.UserRepository;
@@ -69,8 +69,18 @@ public class UserService {
 //        log.info("dd {}",passwordEncoder.encode(logInRequstDto.getPassword()));
 //        log.info("dd {}",passwordEncoder.encode(user.get().getPassword()));
         if (!passwordEncoder.matches(logInRequstDto.getPassword(),user.get().getPassword())) {
-            throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
+            throw new CustomException(ErrorCode.USER_FAILED_LOGIN);
         }
         return user;
+    }
+
+    public void modifyName(ModifyNameRequstDto modifyNameRequstDto, Long id) {
+        try {
+            Optional<UserAccount> user = userRepository.findById(id);
+            user.get().setName(modifyNameRequstDto.getName());
+            userRepository.save(user.get());
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.USER_FAILED_MODIFIED_NAME);
+        }
     }
 }
