@@ -22,7 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        System.out.println(username);
         Optional<UserAccount> userAccount = userRepository.findById(Long.parseLong(username));
         return User.withUsername(username)
                 .password(userAccount.get().getPassword())
