@@ -3,7 +3,7 @@ spring:
     url: jdbc:mariadb://hackathon.chd0zpcvgayq.ap-northeast-2.rds.amazonaws.com/peter
     # url 형식은 jdbc:mysql://RDS의 EndPoint/내부 DB 스키마명 입니다.
     username: admin
-    password:
+    password: ENC(iPTVN/vBgylpt/IXPDt3kN1Ej40GuaWI)
   jpa:
     hibernate:
       ddl-auto: create

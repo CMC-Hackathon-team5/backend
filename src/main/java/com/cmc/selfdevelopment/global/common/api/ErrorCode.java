@@ -21,7 +21,10 @@ public enum ErrorCode {
     // diary
     DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계획입니다."),
     IMPROVEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 자기 계발입니다."),
-    IMPROVEMENT_DUPLICATED(HttpStatus.CONFLICT, "이미 존재하는 자기 계발입니다.");
+    IMPROVEMENT_DUPLICATED(HttpStatus.CONFLICT, "이미 존재하는 자기 계발입니다."),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
+    TODO_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 todo입니다."),
+    TODO_DUPLICATED(HttpStatus.CONFLICT, "이미 존재하는 자기 todo입니다.");
 
     private final HttpStatus status;
     private final String message;
