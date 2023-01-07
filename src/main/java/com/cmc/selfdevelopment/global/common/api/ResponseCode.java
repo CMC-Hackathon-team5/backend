@@ -17,7 +17,8 @@ public enum ResponseCode {
     GET_ALL_DIARIES(HttpStatus.OK, "회고 전체 조회에 성공하였습니다."),
     IMPROVEMENT_FOUND(HttpStatus.OK, "자기 계발 찾기에 성공하였습니다."),
     DIARY_UPDATED(HttpStatus.OK, "회고 수정에 성공하였습니다."),
-    GET_DIARY(HttpStatus.OK, "회고 조회에 성공하였습니다.");
+    GET_DIARY(HttpStatus.OK, "회고 조회에 성공하였습니다."),
+    DIARY_DELETED(HttpStatus.OK, "회고 삭제에 성공하였습니다." );
     private final HttpStatus status;
     private final String message;
 }

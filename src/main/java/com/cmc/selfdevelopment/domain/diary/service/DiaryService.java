@@ -75,4 +75,10 @@ public class DiaryService {
                 .build();
         return diaryResponseDto;
     }
+
+    public void deleteDiary(Long contentId) {
+        Diary diary = diaryRepository.findById(contentId)
+                .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+        diaryRepository.delete(diary);
+    }
 }

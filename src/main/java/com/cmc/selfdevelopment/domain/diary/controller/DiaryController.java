@@ -65,4 +65,12 @@ public class DiaryController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.GET_DIARY, diary));
     }
+
+    @Operation(summary = "회고 삭제", description = "회고 삭제를 하는 메소드입니다.")
+    @DeleteMapping("{id}")
+    public ResponseEntity<ApiResponse> deleteDiary(@PathVariable("id") Long contentId) {
+        diaryService.deleteDiary(contentId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.DIARY_DELETED));
+    }
 }
