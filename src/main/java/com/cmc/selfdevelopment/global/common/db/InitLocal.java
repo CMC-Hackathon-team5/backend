@@ -1,5 +1,7 @@
 package com.cmc.selfdevelopment.global.common.db;
 
+import com.cmc.selfdevelopment.domain.comment.service.CommentService;
+import com.cmc.selfdevelopment.domain.diary.service.DiaryService;
 import com.cmc.selfdevelopment.domain.improvement.dto.ChangeDoneDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.CreateTodoDto;
 import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
@@ -23,7 +25,7 @@ public class InitLocal {
 
     @Bean
     CommandLineRunner init(
-            ImprovementService improvementService, UserService userService, TodoService todoService
+            ImprovementService improvementService, UserService userService, TodoService todoService, DiaryService diaryService, CommentService commentService
     ){
         return args -> {
             if(!initData){
@@ -108,6 +110,20 @@ public class InitLocal {
             todoService.changeCheck(userAccount1, new ChangeDoneDto("운동 하루씩", new Date(2023 - 1900, 1, 5)));
             todoService.changeCheck(userAccount1, new ChangeDoneDto("알고리즘 매일", new Date(2023 - 1900, 1, 6)));
             todoService.changeCheck(userAccount1, new ChangeDoneDto("운동 매일", new Date(2023 - 1900, 1, 7)));
+
+            diaryService.createDiary(1L, "오늘은 언어의 온도를 모두 읽고 독후감을 썼다.");
+            diaryService.createDiary(1L, "하루 일기를 다 쓰고 자는 날이다.");
+            diaryService.createDiary(1L, "초코랑 산책을 나갔다왔다.");
+            diaryService.createDiary(1L, "셀프 드로잉을 많이 하고 자는 날이다.");
+            diaryService.createDiary(1L, "미드 프렌즈 쉐도잉을 했다.");
+            diaryService.createDiary(1L, "블로그 챌린지에 내 일상을 공유했다.");
+            diaryService.createDiary(1L, "회화 연습을 위해 영어 전화를 했다.");
+
+            commentService.createComment(2L, 1L, "오늘 수고 많았어요~");
+            commentService.createComment(3L, 1L, "갓생 너무 멋있어요!!");
+            commentService.createComment(4L, 1L, "멋져요!");
+            commentService.createComment(2L, 2L, "오늘 하루 수고많았어요!");
+            commentService.createComment(3L, 2L, "멋진 하루네요~");
         };
     }
 
