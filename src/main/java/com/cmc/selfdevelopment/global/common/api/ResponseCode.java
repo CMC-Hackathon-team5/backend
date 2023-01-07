@@ -19,7 +19,6 @@ public enum ResponseCode {
     DIARY_UPDATED(HttpStatus.OK, "회고 수정에 성공하였습니다."),
     GET_DIARY(HttpStatus.OK, "회고 조회에 성공하였습니다."),
     DIARY_DELETED(HttpStatus.OK, "회고 삭제에 성공하였습니다." ),
-    COMMENT_CREATED(HttpStatus.OK, "댓글 생성에 성공하였습니다."),
     GET_COMMENTS_SUCCESS(HttpStatus.OK, "댓글 전체 조회에 성공하였습니다."),
     COMMENT_UPDATED(HttpStatus.CREATED, "댓글 수정에 성공하였습니다."),
     COMMENT_DELETED(HttpStatus.OK, "댓글 삭제에 성공하였습니다.");
