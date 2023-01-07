@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,11 +28,12 @@ public class DiaryController {
 
     @Operation(summary = "회고 생성", description = "회고를 생성하는 메소드입니다.")
     @PostMapping
-    public ResponseEntity<ApiResponse> createDiary(@RequestBody CreateDiaryRequestDto createDiaryRequestDto) {
+    public ResponseEntity<ApiResponse> createDiary(
+            @RequestBody CreateDiaryRequestDto createDiaryRequestDto,
+            @AuthenticationPrincipal User user) {
         String content = createDiaryRequestDto.getContent();
 
-        // userId 받아오는거 붙이기
-        Long userId = 1L;
+        Long userId = Long.parseLong(user.getUsername());
 
         diaryService.createDiary(userId, content);
 
@@ -38,9 +42,8 @@ public class DiaryController {
 
     @Operation(summary = "회고 전체 조회", description = "유저의 회고 목록을 조회하는 메소드입니다.")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<DiaryResponseDto>>> getAllDiary() {
-        // userId 받아오는거 붙이기
-        Long userId = 1L;
+    public ResponseEntity<ApiResponse<List<DiaryResponseDto>>> getAllDiary(@AuthenticationPrincipal User user) {
+        Long userId = Long.parseLong(user.getUsername());
 
         List<DiaryResponseDto> diaries = diaryService.getAllDiaries(userId);
 
@@ -49,8 +52,10 @@ public class DiaryController {
 
     @Operation(summary = "회고 수정", description = "회고 내용을 수정하는 메소드입니다.")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateDiary(@RequestBody UpdateDiaryRequestDto updateDiaryRequestDto,
-                                                                     @PathVariable("id") Long contentId) {
+    public ResponseEntity<ApiResponse> updateDiary(
+            @RequestBody UpdateDiaryRequestDto updateDiaryRequestDto,
+            @PathVariable("id") Long contentId
+    ) {
         String content = updateDiaryRequestDto.getContent();
         diaryService.updateDiary(contentId, content);
 
@@ -60,7 +65,7 @@ public class DiaryController {
     @Operation(summary = "회고 상세 조회", description = "회고 하나를 조회하는 메소드입니다.")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<DiaryResponseDto>> getDiary(@PathVariable("id") Long contentId) {
-        log.info("contentId {}", contentId);
+
         DiaryResponseDto diary = diaryService.getDiary(contentId);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.GET_DIARY, diary));

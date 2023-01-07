@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +29,8 @@ public class CommentController {
 
     @Operation(summary = "댓글 생성", description = "댓글을 생성하는 메소드입니다.")
     @PostMapping
-    public ResponseEntity<ApiResponse> createComment(@RequestBody CreateCommentRequestDto createCommentRequestDto) {
-        // TODO: userId 받아오는 메소드 연결
-        Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        log.info("details {}", details);
-        Long userId = 1L;
+    public ResponseEntity<ApiResponse> createComment(@RequestBody CreateCommentRequestDto createCommentRequestDto, @AuthenticationPrincipal User user) {
+        Long userId = Long.parseLong(user.getUsername());
 
         Long diaryId = createCommentRequestDto.getDiaryId();
         String content = createCommentRequestDto.getContent();
