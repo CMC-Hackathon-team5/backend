@@ -1,5 +1,6 @@
-package com.cmc.selfdevelopment.global.common.entity;
+package com.cmc.selfdevelopment.global.common.exception;
 
+import com.cmc.selfdevelopment.global.common.api.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

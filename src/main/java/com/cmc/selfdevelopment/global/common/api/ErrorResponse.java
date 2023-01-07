@@ -1,4 +1,4 @@
-package com.cmc.selfdevelopment.global.common.entity;
+package com.cmc.selfdevelopment.global.common.api;
 
 import lombok.Getter;
 
