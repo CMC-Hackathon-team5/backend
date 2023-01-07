@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +27,6 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<ApiResponse> createComment(@RequestBody CreateCommentRequestDto createCommentRequestDto) {
         // TODO: userId 받아오는 메소드 연결
-        Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        log.info("details {}", details);
         Long userId = 1L;
 
         Long diaryId = createCommentRequestDto.getDiaryId();
