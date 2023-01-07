@@ -15,10 +15,12 @@ import com.cmc.selfdevelopment.global.common.api.ResponseCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,5 +76,11 @@ public class ImprovementController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_CHANGE, todoService.changeCheck(user, changeDoneDto)));
     }
 
+    @Operation(summary = "날짜 별 Todo", description = "날짜 별 Todo리스트를 보여주는 메서드입니다")
+    @GetMapping("/todo")
+    public ResponseEntity<ApiResponse<List<TodoDto>>> showTodo(@RequestParam("date") Date date){
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.TODO_LIST, todoService.findAllTodo(date)));
+    }
 
 }

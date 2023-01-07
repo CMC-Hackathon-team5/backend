@@ -15,7 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -71,5 +74,16 @@ public class TodoService {
                 .isDone(finTodo.isDone())
                 .date(finTodo.getDate())
                 .build();
+    }
+
+    public List<TodoDto> findAllTodo(Date date) {
+        List<Todo> todos = todoRepository.findByDate(date);
+        return todos.stream()
+                .map(todo -> TodoDto.builder()
+                        .title(todo.getImprovement().getTitle())
+                        .isDone(todo.isDone())
+                        .date(todo.getDate())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
