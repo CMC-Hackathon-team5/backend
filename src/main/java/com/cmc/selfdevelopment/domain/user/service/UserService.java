@@ -3,6 +3,7 @@ package com.cmc.selfdevelopment.domain.user.service;
 import com.cmc.selfdevelopment.domain.user.JwtService;
 import com.cmc.selfdevelopment.domain.user.SHA256;
 import com.cmc.selfdevelopment.domain.user.dto.request.LogInRequstDto;
+import com.cmc.selfdevelopment.domain.user.dto.request.ModifyNameRequstDto;
 import com.cmc.selfdevelopment.domain.user.dto.request.SignUpRequestDto;
 import com.cmc.selfdevelopment.domain.user.dto.response.LogInResponseDto;
 import com.cmc.selfdevelopment.domain.user.entity.User;
@@ -68,11 +69,22 @@ public class UserService {
             throw new CustomException(ErrorCode.USERFAILED_LOGIN);
         }
     }
-    public Optional<User> checkPassword(LogInRequstDto logInRequstDto) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByEmailAndPassword(logInRequstDto.getEmail(),logInRequstDto.getPassword()));
-        if(user.isEmpty()) {
-            throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
+
+    public Optional<UserAccount> checkPassword(LogInRequstDto logInRequstDto) {
+        Optional<UserAccount> user = Optional.ofNullable(userRepository.findByEmail(logInRequstDto.getEmail()));
+        if (!passwordEncoder.matches(logInRequstDto.getPassword(),user.get().getPassword())) {
+            throw new CustomException(ErrorCode.USER_FAILED_LOGIN);
         }
         return user;
+    }
+
+    public void modifyName(ModifyNameRequstDto modifyNameRequstDto, Long id) {
+        try {
+            Optional<UserAccount> user = userRepository.findById(id);
+            user.get().setName(modifyNameRequstDto.getName());
+            userRepository.save(user.get());
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.USER_FAILED_MODIFIED_NAME);
+        }
     }
 }

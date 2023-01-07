@@ -6,4 +6,4 @@ spring:
     password: ENC(iPTVN/vBgylpt/IXPDt3kN1Ej40GuaWI)
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
