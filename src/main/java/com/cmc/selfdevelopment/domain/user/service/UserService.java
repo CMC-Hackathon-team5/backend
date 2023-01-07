@@ -1,7 +1,6 @@
 package com.cmc.selfdevelopment.domain.user.service;
 
 import com.cmc.selfdevelopment.domain.user.JwtService;
-import com.cmc.selfdevelopment.domain.user.SHA256;
 import com.cmc.selfdevelopment.domain.user.dto.request.LogInRequstDto;
 import com.cmc.selfdevelopment.domain.user.dto.request.SignUpRequestDto;
 import com.cmc.selfdevelopment.domain.user.dto.response.LogInResponseDto;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -21,44 +21,34 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
     private final JwtService jwtService;
+
     @Transactional
     public void userSignUp(SignUpRequestDto signUpRequestDto) {
-        String pwd;
-        try {
-            pwd = new SHA256().encrypt(signUpRequestDto.getPassword());
-            signUpRequestDto.setPassword(pwd);
-        } catch (Exception e) {
-            throw new CustomException(ErrorCode.PASSWORD_ENCRYPTION_ERROR);
-        }
         try {
             User user = User.builder()
                     .name(signUpRequestDto.getName())
                     .email(signUpRequestDto.getEmail())
                     .age(signUpRequestDto.getAge())
-                    .password(pwd)
+                    .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
                     .build();
             userRepository.save(user);
         } catch (Exception e) {
             throw new CustomException(ErrorCode.PASSWORD_ENCRYPTION_ERROR);
         }
     }
+
     public void validationDuplicateEmail(String email) {
         Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
-        if(!user.isEmpty()) {
+        if (!user.isEmpty()) {
             throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
         }
     }
 
     public LogInResponseDto userLogIn(LogInRequstDto request) {
-        String pwd;
-        try {
-            pwd = new SHA256().encrypt(request.getPassword());
-            request.setPassword(pwd);
-        } catch (Exception e) {
-            throw new CustomException(ErrorCode.PASSWORD_ENCRYPTION_ERROR);
-        }
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
         Optional<User> user = checkPassword(request);
         try {
             Long id = user.get().getId();
@@ -68,9 +58,10 @@ public class UserService {
             throw new CustomException(ErrorCode.USERFAILED_LOGIN);
         }
     }
+
     public Optional<User> checkPassword(LogInRequstDto logInRequstDto) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByEmailAndPassword(logInRequstDto.getEmail(),logInRequstDto.getPassword()));
-        if(user.isEmpty()) {
+        Optional<User> user = Optional.ofNullable(userRepository.findByEmailAndPassword(logInRequstDto.getEmail(), logInRequstDto.getPassword()));
+        if (user.isEmpty()) {
             throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
         }
         return user;
