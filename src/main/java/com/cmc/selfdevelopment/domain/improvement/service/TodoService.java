@@ -1,9 +1,6 @@
 package com.cmc.selfdevelopment.domain.improvement.service;
 
-import com.cmc.selfdevelopment.domain.improvement.dto.ChangeDoneDto;
-import com.cmc.selfdevelopment.domain.improvement.dto.CreateTodoDto;
-import com.cmc.selfdevelopment.domain.improvement.dto.ImprovementDto;
-import com.cmc.selfdevelopment.domain.improvement.dto.TodoDto;
+import com.cmc.selfdevelopment.domain.improvement.dto.*;
 import com.cmc.selfdevelopment.domain.improvement.entity.Improvement;
 import com.cmc.selfdevelopment.domain.improvement.entity.Todo;
 import com.cmc.selfdevelopment.domain.improvement.repository.TodoRepository;
@@ -15,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.Month;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,5 +84,35 @@ public class TodoService {
                         .date(todo.getDate())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public List<TodoPercentDto> findMonthPercent(Date date) {
+        Year year = Year.of(date.getYear());
+        Month month = Month.of(date.getMonth() + 1);
+        int lastDay = month.length(year.isLeap());
+        List<TodoPercentDto> todoPercentDtos = new ArrayList<>();
+        System.out.println(year.getValue());
+        System.out.println(month.getValue());
+        System.out.println(lastDay);
+        for(int i = 1; i <= lastDay; i++){
+            Date eachDate = new Date(year.getValue(), month.getValue() - 1, i);
+            List<TodoDto> todos = findAllTodo(eachDate);
+            todoPercentDtos.add(TodoPercentDto.builder()
+                    .percent(todos.size() == 0 ? 0 : countDone(todos)*100/todos.size())
+                    .date(eachDate)
+                    .build());
+        }
+
+        return todoPercentDtos;
+    }
+
+    public int countDone(List<TodoDto> todoDtos){
+        int cnt = 0;
+        for(TodoDto todoDto : todoDtos){
+            if(todoDto.isDone()){
+                cnt++;
+            }
+        }
+        return cnt;
     }
 }
