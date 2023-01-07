@@ -59,9 +59,18 @@ public class InitLocal {
             SignUpRequestDto signUpRequestDto4 = new SignUpRequestDto("test4@test.com", "password", "테스트이름4");
             userService.userSignUp(signUpRequestDto4);
 
-            CreateTodoDto createTodoDto1 = new CreateTodoDto("낚시", new Date(2023 - 1900, 1, 15));
+            CreateTodoDto createTodoDto1 = new CreateTodoDto("운동", new Date(2023 - 1900, 1, 1));
             UserAccount userAccount1 = userService.findUserById(1L);
             todoService.create(createTodoDto1, userAccount1);
+            CreateTodoDto createTodoDto2 = new CreateTodoDto("독서", new Date(2023 - 1900, 1, 3));
+            UserAccount userAccount2 = userService.findUserById(1L);
+            todoService.create(createTodoDto2, userAccount2);
+            CreateTodoDto createTodoDto3 = new CreateTodoDto("피아노 연주", new Date(2023 - 1900, 1, 5));
+            UserAccount userAccount3 = userService.findUserById(1L);
+            todoService.create(createTodoDto3, userAccount3);
+            CreateTodoDto createTodoDto4 = new CreateTodoDto("알고리즘 공부", new Date(2023 - 1900, 1, 7));
+            UserAccount userAccount4 = userService.findUserById(1L);
+            todoService.create(createTodoDto4, userAccount4);
         };
     }
 
