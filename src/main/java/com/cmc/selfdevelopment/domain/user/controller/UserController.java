@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<String>> signup(@RequestBody SignUpRequestDto request) {
+    public ResponseEntity<ApiResponse> signup(@RequestBody SignUpRequestDto request) {
         userService.validationDuplicateEmail(request.getEmail());
         userService.userSignUp(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(ResponseCode.USER_SIGNUP));

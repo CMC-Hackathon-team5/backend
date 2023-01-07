@@ -69,7 +69,7 @@ public class UserService {
 //        log.info("dd {}",passwordEncoder.encode(logInRequstDto.getPassword()));
 //        log.info("dd {}",passwordEncoder.encode(user.get().getPassword()));
         if (!passwordEncoder.matches(logInRequstDto.getPassword(),user.get().getPassword())) {
-            throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
+            throw new CustomException(ErrorCode.USER_FAILED_LOGIN);
         }
         return user;
     }
