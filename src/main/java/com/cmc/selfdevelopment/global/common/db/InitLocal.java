@@ -45,8 +45,14 @@ public class InitLocal {
             improvementService.create(improvementDto9);
             improvementService.create(improvementDto10);
 
-            UserTempDto userTempDto = new UserTempDto("test@test.com", "password", "테스트이름", 12);
-            userTempService.create(userTempDto);
+            UserTempDto userTempDto1 = new UserTempDto("test1@test.com", "password", "테스트이름1", 12);
+            userTempService.create(userTempDto1);
+            UserTempDto userTempDto2 = new UserTempDto("test2@test.com", "password", "테스트이름2", 13);
+            userTempService.create(userTempDto2);
+            UserTempDto userTempDto3 = new UserTempDto("test3@test.com", "password", "테스트이름3", 14);
+            userTempService.create(userTempDto3);
+            UserTempDto userTempDto4 = new UserTempDto("test4@test.com", "password", "테스트이름4", 15);
+            userTempService.create(userTempDto4);
         };
     }
 
