@@ -1,8 +1,8 @@
-### Issue
+### 📌 Issue
 - # 이슈 번호
 
-### DONE
+### ✨ DONE
 - 해당 이슈에서 작업한 내용
 
-### NOTICE
+### 📚 NOTICE
 - 알릴 내용
