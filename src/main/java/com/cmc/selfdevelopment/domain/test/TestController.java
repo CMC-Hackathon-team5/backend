@@ -1,9 +1,9 @@
 package com.cmc.selfdevelopment.domain.test;
 
-import com.cmc.selfdevelopment.global.common.entity.ApiResponse;
-import com.cmc.selfdevelopment.global.common.entity.CustomException;
-import com.cmc.selfdevelopment.global.common.entity.ErrorCode;
-import com.cmc.selfdevelopment.global.common.entity.ResponseCode;
+import com.cmc.selfdevelopment.global.common.api.ApiResponse;
+import com.cmc.selfdevelopment.global.common.exception.CustomException;
+import com.cmc.selfdevelopment.global.common.api.ErrorCode;
+import com.cmc.selfdevelopment.global.common.api.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

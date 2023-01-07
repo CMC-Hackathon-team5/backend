@@ -1,4 +1,4 @@
-package com.cmc.selfdevelopment.global.common.entity;
+package com.cmc.selfdevelopment.global.common.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,10 @@ public enum ErrorCode {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "접근 권한이 없는 유저입니다."),
 
     // diary
-    DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계획입니다.");
+    DIARY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계획입니다."),
+    IMPROVEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 자기 계발입니다."),
+    IMPROVEMENT_DUPLICATED(HttpStatus.CONFLICT, "이미 존재하는 자기 계발입니다.")
+    ;
 
     private final HttpStatus status;
     private final String message;

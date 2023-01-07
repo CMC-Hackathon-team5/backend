@@ -1,5 +1,8 @@
-package com.cmc.selfdevelopment.global.common.entity;
+package com.cmc.selfdevelopment.global.common.exception;
 
+import com.cmc.selfdevelopment.global.common.api.ErrorCode;
+import com.cmc.selfdevelopment.global.common.api.ErrorResponse;
+import com.cmc.selfdevelopment.global.common.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
