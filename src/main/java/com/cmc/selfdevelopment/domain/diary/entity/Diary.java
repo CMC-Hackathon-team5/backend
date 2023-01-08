@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Getter
 @Table(name = "Diary")
@@ -20,5 +22,6 @@ public class Diary extends BaseEntity {
     @ManyToOne @Setter @JoinColumn(name = "user_id", nullable = false)
     private UserAccount userAccount;
 
-
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private Date date;
 }

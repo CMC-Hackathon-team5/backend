@@ -13,4 +13,5 @@ public class DiaryResponseDto {
     private Long id;
     private Long user_id;
     private String content;
+    private Date date;
 }

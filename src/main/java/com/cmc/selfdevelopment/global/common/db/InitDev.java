@@ -111,13 +111,14 @@ public class InitDev {
             todoService.changeCheck(userAccount1, new ChangeDoneDto("알고리즘 매일", new Date(2023 - 1900, 0, 6)));
             todoService.changeCheck(userAccount1, new ChangeDoneDto("운동 매일", new Date(2023 - 1900, 0, 7)));
 
-            diaryService.createDiary(1L, "오늘은 언어의 온도를 모두 읽고 독후감을 썼다.");
-            diaryService.createDiary(1L, "하루 일기를 다 쓰고 자는 날이다.");
-            diaryService.createDiary(1L, "초코랑 산책을 나갔다왔다.");
-            diaryService.createDiary(1L, "셀프 드로잉을 많이 하고 자는 날이다.");
-            diaryService.createDiary(1L, "미드 프렌즈 쉐도잉을 했다.");
-            diaryService.createDiary(1L, "블로그 챌린지에 내 일상을 공유했다.");
-            diaryService.createDiary(1L, "회화 연습을 위해 영어 전화를 했다.");
+            diaryService.createDiary(1L, "오늘은 언어의 온도를 모두 읽고 독후감을 썼다.", new Date(2023 - 1900, 0, 1));
+            diaryService.createDiary(1L, "하루 일기를 다 쓰고 자는 날이다.", new Date(2023 - 1900, 0, 2));
+            diaryService.createDiary(1L, "초코랑 산책을 나갔다왔다.", new Date(2023 - 1900, 0, 3));
+            diaryService.createDiary(1L, "셀프 드로잉을 많이 하고 자는 날이다.", new Date(2023 - 1900, 0, 4));
+            diaryService.createDiary(1L, "미드 프렌즈 쉐도잉을 했다.", new Date(2023 - 1900, 0, 5));
+            diaryService.createDiary(1L, "블로그 챌린지에 내 일상을 공유했다.", new Date(2023 - 1900, 0, 6));
+            diaryService.createDiary(1L, "회화 연습을 위해 영어 전화를 했다.", new Date(2023 - 1900, 0, 7));
+            diaryService.createDiary(1L, "해커톤 갔다와서 너무 피곤해서 하루 종일 잤다", new Date(2023 - 1900, 0, 8));
 
             commentService.createComment(2L, 1L, "오늘 수고 많았어요~");
             commentService.createComment(3L, 1L, "갓생 너무 멋있어요!!");

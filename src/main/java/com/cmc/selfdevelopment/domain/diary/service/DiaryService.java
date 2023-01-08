@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +25,14 @@ public class DiaryService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void createDiary(Long userId, String content) {
+    public void createDiary(Long userId, String content, Date date) {
         UserAccount userAccount = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Diary diary = Diary.builder()
                 .userAccount(userAccount)
                 .content(content)
+                .date(date)
                 .build();
 
         diaryRepository.save(diary);
@@ -74,7 +76,18 @@ public class DiaryService {
                 .build();
         return diaryResponseDto;
     }
-
+    public DiaryResponseDto getDayDiary(Date date, UserAccount userAccount) {
+        Diary diary = diaryRepository.findByDateAndUserAccount(date, userAccount)
+                .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+//        DiaryResponseDto diaryResponseDto = DiaryMapper.INSTANCE.toResponseDto(diary);
+        DiaryResponseDto diaryResponseDto = DiaryResponseDto.builder()
+                .id(diary.getId())
+                .user_id(diary.getUserAccount().getId())
+                .content(diary.getContent())
+                .date(date)
+                .build();
+        return diaryResponseDto;
+    }
     public void deleteDiary(Long contentId) {
         Diary diary = diaryRepository.findById(contentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
